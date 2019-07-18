@@ -1,11 +1,14 @@
 import React from 'react'
 import Message from './Message.jsx'
 
-export default function MessageList(){
+export default function MessageList({ messagesList }){
   return (
     <div className="container">
-    <Message />
-    <Message />
+      {messagesList.map(message => {
+        return (
+          <Message message={message}/>
+        )
+      })}
   </div>
   )
 }

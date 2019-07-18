@@ -1,23 +1,31 @@
 import React from 'react'
 
-export default function Message() {
+export default function Message({ message }) {
+  let readClassName = ''
+  message.read ? readClassName = 'row message read' : readClassName = 'row message unread'
+
   return (
-    <div class="row message read">
-      <div class="col-xs-1">
-        <div class="row">
-          <div class="col-xs-2">
+    <div className={`${readClassName}`}>
+      <div className="col-xs-1">
+        <div className="row">
+          <div className="col-xs-2">
+            {/* message.checked = true/false */}
+            {/* if checked="checked" */}
             <input type="checkbox" />
           </div>
-          <div class="col-xs-2">
-            <i class="star fa fa-star"></i>
+          <div className="col-xs-2">
+            {message.starred ? <i className="star fa fa-star"></i> : <i className="star fa fa-star-o"></i>}
           </div>
         </div>
       </div>
-      <div class="col-xs-11">
-        <span class="label label-warning">dev</span>
-        <span class="label label-warning">gschool</span>
+      <div className="col-xs-11">
+        {message.labels.map( label => {
+          return (
+            <span className="label label-warning">{label}</span>
+          )
+        })}
         <a href="#">
-          Here is some message text that has a bunch of stuff
+          {message.subject}
         </a>
       </div>
     </div>
