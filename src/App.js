@@ -47,34 +47,20 @@ class App extends React.Component {
   selectedHandler = async (id) => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.id === id){
-          return {
-            ...message,
-            selected: !message.selected
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          selected: message.id === id ? !message.selected : message.selected
         }
       })
     })
-
-    this.anyChecked()
   }
 
   starHandler = async (id) => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.id === id){
-          return {
-            ...message,
-            starred: !message.starred
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          starred: message.id === id ? !message.starred : message.starred
         }
       })
     })
@@ -83,15 +69,9 @@ class App extends React.Component {
   readHandler = async (id) => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.id === id){
-          return {
-            ...message,
-            read: true
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          read: message.id === id ? true : message.read
         }
       })
     })
@@ -100,15 +80,9 @@ class App extends React.Component {
   markAsRead = async () => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.selected){
-          return {
-            ...message,
-            read: true
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          read: message.selected ? true : message.read
         }
       })
     })
@@ -117,15 +91,9 @@ class App extends React.Component {
   markAsUnread = async () => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.selected){
-          return {
-            ...message,
-            read: false
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          read: message.selected ? false : message.read
         }
       })
     })
@@ -156,15 +124,9 @@ class App extends React.Component {
   applyLabel = async (value) => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.selected && !message.labels.includes(value)){
-          return {
-            ...message,
-            labels: [...message.labels, value]
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          labels: message.selected && !message.labels.includes(value) ? [...message.labels, value] : message.labels
         }
       })
     })
@@ -173,15 +135,9 @@ class App extends React.Component {
   removeLabel = async (value) => {
     this.setState({
       messages: this.state.messages.map(message => {
-        if(message.selected && message.labels.includes(value)){
-          return {
-            ...message,
-            labels: message.labels.filter(label => label != value)
-          }
-        } else {
-          return {
-            ...message
-          }
+        return {
+          ...message,
+          labels: message.selected && message.labels.includes(value) ? message.labels.filter(label => label != value) : message.labels
         }
       })
     })
