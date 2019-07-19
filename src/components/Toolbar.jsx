@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function Toolbar({ composeButton, markAsRead, markAsUnread, markAsChecked, applyLabel, removeLabel, deleteMessages, anyChecked, noneChecked, unreadCount}) {
 
+  // setting up which checkbox icon to use based on messages state
   let iconClassName = ''
   anyChecked() ? iconClassName = 'fa fa-minus-square-o' : iconClassName = 'fa fa-check-square-o'
   let noneCheckedBool = false
@@ -10,6 +11,7 @@ export default function Toolbar({ composeButton, markAsRead, markAsUnread, markA
     iconClassName = 'fa fa-square-o'
   }
 
+  // force dropdowns to reset to first entry after selection is made
   let applyLabelRef = React.createRef()
   let removeLabelRef = React.createRef()
   function helper() {

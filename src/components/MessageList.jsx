@@ -4,6 +4,7 @@ import Message from './Message.jsx'
 export default function MessageList({ messagesList, selectedHandler, readHandler, starHandler}){
   return (
     <div className="container">
+      {/* maps over each message to be built */}
       {messagesList.map(message => {
         return (
           <Message
@@ -11,7 +12,6 @@ export default function MessageList({ messagesList, selectedHandler, readHandler
             selectedHandler={selectedHandler}
             readHandler={readHandler}
             starHandler={starHandler}
-
           />
         )
       })}

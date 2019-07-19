@@ -79,7 +79,7 @@ class App extends React.Component {
         "Content-Type": "application/json"
       }
     }).then( () => {
-        this.reloadMessages()
+      this.reloadMessages()
     })
 
   }
@@ -92,18 +92,23 @@ class App extends React.Component {
       subject: tempSubject,
       body: tempBody
     }
+
+    // hide compose form after submit
     this.setState({
       displayCompose: false
     })
+
+    // send data to API through postNewMessage()
     this.postNewMessage(newMessage)
   }
 
+  // helper method for compose form
   newMessageSubject = (value) => {
     this.setState({
       newMessageSubject: value
     })
   }
-
+  // helper method for compose form
   newMessageBody = (value) => {
     this.setState({
       newMessageBody: value
@@ -163,7 +168,6 @@ class App extends React.Component {
 
   markAsRead = async () => {
     let idArray = []
-
     this.setState({
       messages: this.state.messages.map(message => {
         return {
@@ -185,7 +189,6 @@ class App extends React.Component {
 
   markAsUnread = async () => {
     let idArray = []
-
     this.setState({
       messages: this.state.messages.map(message => {
         return {
@@ -250,7 +253,6 @@ class App extends React.Component {
 
   removeLabel = async (value) => {
     let idArray = []
-
     this.setState({
       messages: this.state.messages.map(message => {
         return {
@@ -288,10 +290,12 @@ class App extends React.Component {
         "Content-Type": "application/json"
       }
     }).then( () => {
+      // after PATCH, recall GET from API to reload messages
       this.reloadMessages()
     })
   }
 
+  // looks for at least one or all messages checked
   anyChecked = () => {
     let localMessages = this.state.messages
     for(let i = 0; i < localMessages.length; i++){
@@ -302,6 +306,7 @@ class App extends React.Component {
     return false
   }
 
+  // helper to confirm no messages are checked
   noneChecked = () => {
     let localMessages = this.state.messages
     for(let i = 0; i < localMessages.length; i++){
@@ -312,6 +317,7 @@ class App extends React.Component {
     return true
   }
 
+  // returns count of unread messages
   unreadCount = () => {
     let count = 0
     let localMessages = this.state.messages

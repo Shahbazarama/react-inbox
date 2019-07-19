@@ -12,6 +12,7 @@ export default function Message({ message, selectedHandler, readHandler, starHan
   message.selected ? readClassName += ' selected' : readClassName.replace(/\bselected\b/g ,'')
 
   return (
+    // onClick/onChange functions send message ID back to App.js when interacted with
     <div className={`${readClassName}`}>
       <div className="col-xs-1">
         <div className="row">
