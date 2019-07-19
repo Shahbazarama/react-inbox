@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Toolbar({ markAsRead, markAsUnread, markAsChecked, applyLabel, removeLabel, deleteMessages, anyChecked, noneChecked, unreadCount}) {
+export default function Toolbar({ composeButton, markAsRead, markAsUnread, markAsChecked, applyLabel, removeLabel, deleteMessages, anyChecked, noneChecked, unreadCount}) {
 
   let iconClassName = ''
   anyChecked() ? iconClassName = 'fa fa-minus-square-o' : iconClassName = 'fa fa-check-square-o'
@@ -25,6 +25,10 @@ export default function Toolbar({ markAsRead, markAsUnread, markAsChecked, apply
             <span className="badge badge">{unreadCount()}</span>
             unread messages
           </p>
+
+          <a className="btn btn-danger" onClick={() => composeButton()}>
+            <i className="fa fa-plus"></i>
+          </a>
 
           <button className="btn btn-default" onClick={() => markAsChecked()}>
             <i className={`${iconClassName}`}></i>
