@@ -26,9 +26,9 @@ export default function Toolbar({ composeButton, markAsRead, markAsUnread, markA
             unread messages
           </p>
 
-          <a className="btn btn-danger" onClick={() => composeButton()}>
+          <button className="btn btn-danger" onClick={() => composeButton()}>
             <i className="fa fa-plus"></i>
-          </a>
+          </button>
 
           <button className="btn btn-default" onClick={() => markAsChecked()}>
             <i className={`${iconClassName}`}></i>

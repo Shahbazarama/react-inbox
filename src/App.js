@@ -43,8 +43,7 @@ class App extends React.Component {
       messages: messagesJson.map( (message, index) => {
         return {
           ...message,
-          selected: message.selected || false,
-          id: index
+          selected: message.selected || false
         }
       })
     })
@@ -59,8 +58,7 @@ class App extends React.Component {
       messages: messagesJson.map( (message, index) => {
         return {
           ...message,
-          selected: message.selected || false,
-          id: index
+          selected: message.selected || false
         }
       })
     })
@@ -73,10 +71,8 @@ class App extends React.Component {
   }
 
   postNewMessage = async (newMessage) => {
-    // POST http://localhost:8082/api/messages
-    console.log(JSON.stringify(newMessage))
     let url = `http://localhost:8082/api/messages`
-    let res = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       body: JSON.stringify(newMessage),
       headers: {
@@ -99,7 +95,6 @@ class App extends React.Component {
     this.setState({
       displayCompose: false
     })
-
     this.postNewMessage(newMessage)
   }
 
@@ -135,6 +130,15 @@ class App extends React.Component {
         }
       })
     })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: [id], command: 'star'}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
   }
 
   readHandler = async (id) => {
@@ -146,27 +150,58 @@ class App extends React.Component {
         }
       })
     })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: [id], command: 'read', read: true}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
   }
 
   markAsRead = async () => {
+    let idArray = []
+
     this.setState({
       messages: this.state.messages.map(message => {
         return {
           ...message,
-          read: message.selected ? true : message.read
+          read: message.selected ? (idArray.push(message.id) && true) : message.read
         }
       })
+    })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: idArray, command: 'read', read: true}),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
   }
 
   markAsUnread = async () => {
+    let idArray = []
+
     this.setState({
       messages: this.state.messages.map(message => {
         return {
           ...message,
-          read: message.selected ? false : message.read
+          read: message.selected ? (idArray.push(message.id) && false) : message.read
         }
       })
+    })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: idArray, command: 'read', read: false}),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
   }
 
@@ -193,30 +228,67 @@ class App extends React.Component {
   }
 
   applyLabel = async (value) => {
+    let idArray = []
     this.setState({
       messages: this.state.messages.map(message => {
         return {
           ...message,
-          labels: message.selected && !message.labels.includes(value) ? [...message.labels, value] : message.labels
+          labels: message.selected && !message.labels.includes(value) ? (idArray.push(message.id) && [...message.labels, value]) : message.labels
         }
       })
+    })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: idArray, command: 'addLabel', label: value}),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
   }
 
   removeLabel = async (value) => {
+    let idArray = []
+
     this.setState({
       messages: this.state.messages.map(message => {
         return {
           ...message,
-          labels: message.selected && message.labels.includes(value) ? message.labels.filter(label => label !== value) : message.labels
+          labels: message.selected && message.labels.includes(value) ? (idArray.push(message.id) && message.labels.filter(label => label !== value)) : message.labels
         }
       })
+    })
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: idArray, command: 'removeLabel', label: value}),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
   }
 
   deleteMessages = async () => {
-    this.setState({
-      messages: this.state.messages.filter(message => !message.selected)
+    let idArray = []
+    let localMessages = this.state.messages
+
+    for(let i = 0; i < localMessages.length; i++){
+      if( localMessages[i].selected ){
+        idArray.push(localMessages[i].id)
+      }
+    }
+
+    let url = `http://localhost:8082/api/messages`
+    await fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify({messageIds: idArray, command: 'delete'}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then( () => {
+      this.reloadMessages()
     })
   }
 
@@ -252,7 +324,6 @@ class App extends React.Component {
   }
 
   render(){
-    console.log(this.state)
     return (
       <>
       <Toolbar
